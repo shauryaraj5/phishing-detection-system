@@ -1,5 +1,0 @@
-This project focuses on building a network security system to detect phishing attempts by classifying data as malicious or non-malicious. The system leverages ETL pipelines, machine learning models, and cloud deployment to create a robust and scalable solution.
-
-1. setup.py
-The setup.py file is an essential part of packaging and distributing Python projects. It is used by setuptools (or distutils in older Python versions) to define the configuration 
-of the project, such as its metadata, dependencies, and more
