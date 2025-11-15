@@ -41,7 +41,7 @@ class DataIngestion:
                 df=df.drop(columns=["_id"],axis=1)
             
             df.replace({"na":np.nan},inplace=True)
-            logging.info(f"Exported data from mongodb database:{database_name} and collection :{collection_name} into dataframe")
+            logging.info(f"Exported data from mongodb database:{database_name} and collection :{collection_name}")
             return df
         except Exception as e:
             raise NetworkSecurityException
@@ -56,7 +56,7 @@ class DataIngestion:
             dir_path = os.path.dirname(feature_store_file_path)
             os.makedirs(dir_path,exist_ok=True)
             dataframe.to_csv(feature_store_file_path,index=False,header=True)
-            logging.info(f"Exported data into feature store file path:{feature_store_file_path}")
+            logging.info(f"Saved raw data in Artifacts/data_ingestion/feature_store")
             return dataframe
             
         except Exception as e:
@@ -83,21 +83,22 @@ class DataIngestion:
             test_set.to_csv(
                 self.data_ingestion_config.testing_file_path, index=False, header=True
             )
-            logging.info(f"Exported train and test file path.")
+            logging.info(f"Saved train and test data in Artifacts/data_ingestion/ingested")
 
             
         except Exception as e:
             raise NetworkSecurityException(e,sys)
         
-        
+    # Main function to initiate data ingestion
     def initiate_data_ingestion(self):
         try:
+            
             dataframe=self.export_collection_as_dataframe()
             dataframe=self.export_data_into_feature_store(dataframe)
             self.split_data_as_train_test(dataframe)
             dataingestionartifact=DataIngestionArtifact(trained_file_path=self.data_ingestion_config.training_file_path,
                                                         test_file_path=self.data_ingestion_config.testing_file_path)
+            
             return dataingestionartifact
-
         except Exception as e:
             raise NetworkSecurityException

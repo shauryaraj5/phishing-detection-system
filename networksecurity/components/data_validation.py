@@ -76,13 +76,13 @@ class DataValidation:
             dir_path = os.path.dirname(drift_report_file_path)
             os.makedirs(dir_path,exist_ok=True)
             write_yaml_file(file_path=drift_report_file_path,content=report)
-            logging.info(f"Data drift report file created at {drift_report_file_path}")
+            logging.info(f"Saved Data drift report file in Artifacts/data_validation/drift_report")
             return status
         
         except Exception as e:
             raise NetworkSecurityException(e,sys)
         
-    
+    # Main function to initiate data validation
     def initiate_data_validation(self)->DataValidationArtifact:
         try:
             train_file_path=self.data_ingestion_artifact.trained_file_path
@@ -128,7 +128,7 @@ class DataValidation:
             test_dataframe.to_csv(
                 self.data_validation_config.valid_test_file_path, index=False, header=True
             )
-            logging.info("Valid train and test file saved.")
+            logging.info("Saved valid train and test data in Artifacts/data_validation/validated")
 
              ## create DataValidationArtifact
             data_validation_artifact = DataValidationArtifact(
@@ -139,7 +139,7 @@ class DataValidation:
                 invalid_test_file_path=None,
                 drift_report_file_path=self.data_validation_config.drift_report_file_path,
             )
-            logging.info(f"Data Validation artifact created")
+
             return data_validation_artifact
         except Exception as e:
             raise NetworkSecurityException(e,sys)

@@ -9,6 +9,8 @@ import pickle
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
 
+
+# Function to read a yaml file and return its contents as a dictionary
 def read_yaml_file(file_path: str) -> dict:
     try:
         with open(file_path, "rb") as yaml_file:
@@ -16,6 +18,7 @@ def read_yaml_file(file_path: str) -> dict:
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
     
+# Function to write a dictionary to a yaml file
 def write_yaml_file(file_path: str, content: object, replace: bool = False) -> None:
     try:
         if replace:
@@ -27,6 +30,7 @@ def write_yaml_file(file_path: str, content: object, replace: bool = False) -> N
     except Exception as e:
         raise NetworkSecurityException(e, sys)
     
+# Function to save a numpy array to a file
 def save_numpy_array_data(file_path: str, array: np.array):
     """
     Save numpy array data to file
@@ -41,16 +45,16 @@ def save_numpy_array_data(file_path: str, array: np.array):
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
     
+# Function to save an object to a file using pickle
 def save_object(file_path: str, obj: object) -> None:
     try:
-        logging.info("Entered the save_object method of MainUtils class")
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         with open(file_path, "wb") as file_obj:
             pickle.dump(obj, file_obj)
-        logging.info("Exited the save_object method of MainUtils class")
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
     
+# Function to load an object from a file using pickle  
 def load_object(file_path: str, ) -> object:
     try:
         if not os.path.exists(file_path):
@@ -61,6 +65,7 @@ def load_object(file_path: str, ) -> object:
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
     
+# Function to load a numpy array from a file    
 def load_numpy_array_data(file_path: str) -> np.array:
     """
     load numpy array data from file
@@ -73,8 +78,7 @@ def load_numpy_array_data(file_path: str) -> np.array:
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
     
-
-
+# Function to evaluate multiple machine learning models and return their performance scores
 def evaluate_models(X_train, y_train,X_test,y_test,models,param):
     try:
         report = {}
