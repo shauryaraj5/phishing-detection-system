@@ -78,6 +78,7 @@ def load_numpy_array_data(file_path: str) -> np.array:
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
     
+    
 # Function to evaluate multiple machine learning models and return their performance scores
 def evaluate_models(X_train, y_train,X_test,y_test,models,param):
     try:
