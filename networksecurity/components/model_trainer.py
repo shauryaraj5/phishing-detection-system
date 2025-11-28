@@ -26,11 +26,11 @@ import mlflow
 from urllib.parse import urlparse
 import dagshub
 
-#dagshub.init(repo_owner='krishnaik06', repo_name='networksecurity', mlflow=True)
+dagshub.init(repo_owner='shauryaraj5', repo_name='phishing-detection-system', mlflow=True)
 
-# os.environ["MLFLOW_TRACKING_URI"]="https://dagshub.com/krishnaik06/networksecurity.mlflow"
-# os.environ["MLFLOW_TRACKING_USERNAME"]="krishnaik06"
-# os.environ["MLFLOW_TRACKING_PASSWORD"]="7104284f1bb44ece21e0e2adb4e36a250ae3251f"
+# os.environ["MLFLOW_TRACKING_URI"]="https://dagshub.com/shauryaraj5/phishing-detection-system.mlflow"
+# os.environ["MLFLOW_TRACKING_USERNAME"]=""
+# os.environ["MLFLOW_TRACKING_PASSWORD"]=""
 
 
 class ModelTrainer:
@@ -42,30 +42,33 @@ class ModelTrainer:
             raise NetworkSecurityException(e,sys)
         
 
-    # # MLflow tracking    
-    # def track_mlflow(self,best_model,classificationmetric):
-    #     mlflow.set_registry_uri("https://dagshub.com/krishnaik06/networksecurity.mlflow")
-    #     tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
-    #     with mlflow.start_run():
-    #         f1_score=classificationmetric.f1_score
-    #         precision_score=classificationmetric.precision_score
-    #         recall_score=classificationmetric.recall_score
+    ## MLflow tracking    
+    def track_mlflow(self,best_model,classificationmetric):
+        # mlflow.set_registry_uri("")
+        # tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
+        with mlflow.start_run():
+            f1_score=classificationmetric.f1_score
+            precision_score=classificationmetric.precision_score
+            recall_score=classificationmetric.recall_score
 
 
-    #         mlflow.log_metric("f1_score",f1_score)
-    #         mlflow.log_metric("precision",precision_score)
-    #         mlflow.log_metric("recall_score",recall_score)
-    #         mlflow.sklearn.log_model(best_model,"model")
-    #         # Model registry does not work with file store
-    #         if tracking_url_type_store != "file":
+            mlflow.log_metric("f1_score",f1_score)
+            mlflow.log_metric("precision",precision_score)
+            mlflow.log_metric("recall_score",recall_score)
 
-    #             # Register the model
-    #             # There are other ways to use the Model Registry, which depends on the use case,
-    #             # please refer to the doc for more information:
-    #             # https://mlflow.org/docs/latest/model-registry.html#api-workflow
-    #             mlflow.sklearn.log_model(best_model, "model", registered_model_name=best_model)
-    #         else:
-    #             mlflow.sklearn.log_model(best_model, "model")
+            # Not allowed in Dagshub
+            # mlflow.sklearn.log_model(best_model,"model")
+
+            # # Model registry does not work with file store
+            # if tracking_url_type_store != "file":
+
+            #     # Register the model
+            #     # There are other ways to use the Model Registry, which depends on the use case,
+            #     # please refer to the doc for more information:
+            #     # https://mlflow.org/docs/latest/model-registry.html#api-workflow
+            #     mlflow.sklearn.log_model(best_model, "model", registered_model_name=best_model)
+            # else:
+            #     mlflow.sklearn.log_model(best_model, "model")
 
 
     # Function to train and evaluate models
@@ -81,27 +84,26 @@ class ModelTrainer:
         params={
             "Decision Tree": {
                 'criterion':['gini', 'entropy', 'log_loss'],
-                'splitter':['best','random'],
-                'max_features':['sqrt','log2'],
+                # 'splitter':['best','random'],
+                # 'max_features':['sqrt','log2'],
             },
             "Random Forest":{
                 'criterion':['gini', 'entropy', 'log_loss'],
-                
-                'max_features':['sqrt','log2',None],
-                'n_estimators': [8,16,32,128,256]
+                # 'max_features':['sqrt','log2',None],
+                # 'n_estimators': [8,16,32,128,256]
             },
             "Gradient Boosting":{
                 'loss':['log_loss', 'exponential'],
-                'learning_rate':[.1,.01,.05,.001],
-                'subsample':[0.6,0.7,0.75,0.85,0.9],
-                'criterion':['squared_error', 'friedman_mse'],
-                'max_features':['auto','sqrt','log2'],
-                'n_estimators': [8,16,32,64,128,256]
+                # 'learning_rate':[.1,.01,.05,.001],
+                # 'subsample':[0.6,0.7,0.75,0.85,0.9],
+                # 'criterion':['squared_error', 'friedman_mse'],
+                # 'max_features':['auto','sqrt','log2'],
+                # 'n_estimators': [8,16,32,64,128,256]
             },
             "Logistic Regression":{},
             "AdaBoost":{
                 'learning_rate':[.1,.01,.001],
-                'n_estimators': [8,16,32,64,128,256]
+                # 'n_estimators': [8,16,32,64,128,256]
             }
             
         }
@@ -126,14 +128,14 @@ class ModelTrainer:
         logging.info(f"Best model Metrics on training data: {classification_train_metric}")
 
         ## Track the experiements with mlflow
-        #self.track_mlflow(best_model,classification_train_metric)
+        self.track_mlflow(best_model,classification_train_metric)
 
         ## Prediction on test data
         y_test_pred=best_model.predict(x_test)
         classification_test_metric=get_classification_score(y_true=y_test,y_pred=y_test_pred)
         logging.info(f"Best model Metrics on testing data: {classification_test_metric}")
 
-        #self.track_mlflow(best_model,classification_test_metric)
+        self.track_mlflow(best_model,classification_test_metric)
 
         ## Save the best model
         preprocessor = load_object(file_path=self.data_transformation_artifact.transformed_object_file_path)

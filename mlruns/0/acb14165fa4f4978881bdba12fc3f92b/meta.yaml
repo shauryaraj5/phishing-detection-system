@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/Data%20Science/phishing-detection-system/mlruns/0/acb14165fa4f4978881bdba12fc3f92b/artifacts
+end_time: 1764265991854
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: acb14165fa4f4978881bdba12fc3f92b
+run_name: dapper-finch-370
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1764265985243
+status: 3
+tags: []
+user_id: shaur

@@ -1,0 +1,10 @@
+artifact_location: file:///D:/Data%20Science/phishing-detection-system/mlruns/0/models/m-579295935e514b6aadf23a479ecc5ed9/artifacts
+creation_timestamp: 1764265985408
+experiment_id: '0'
+last_updated_timestamp: 1764265991818
+model_id: m-579295935e514b6aadf23a479ecc5ed9
+model_type: null
+name: model
+source_run_id: acb14165fa4f4978881bdba12fc3f92b
+status: 2
+status_message: null
