@@ -1,21 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Data Table</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-    </style>
-</head>
-<body>
-    <h2>Predicted Data</h2>
-    {{ table | safe }}
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="h3 fw-semibold mb-2">
+            <i class="bi bi-table me-2"></i>Prediction Results
+        </h2>
+        {% if filename %}
+            <p class="text-muted small mb-0">
+                Source file:
+                <span class="badge text-bg-secondary">{{ filename }}</span>
+            </p>
+        {% endif %}
+    </div>
+    <div class="col-auto d-flex align-items-start gap-2">
+        <a href="{{ request.url_for('index') }}" class="btn btn-outline-light btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> New Prediction
+        </a>
+        <a href="/prediction_output/batch_pred_output.csv" class="btn btn-neon btn-sm" download>
+            <i class="bi bi-download me-1"></i> Download CSV
+        </a>
+    </div>
+</div>
+
+<div class="card glass-card shadow-lg">
+    <div class="card-body table-responsive">
+        <!-- df.to_html is passed as safe HTML -->
+        {{ table | safe }}
+    </div>
+</div>
+{% endblock %}
